@@ -72,11 +72,9 @@ public class TennisPoint {
                 pointList.set(0,"A");
             } else{
                 ownerOfThePoint = playerId;
-                initPoints();
             }
         }else if(pointList.get(playerId) == "A"){
                 ownerOfThePoint = playerId;
-                initPoints();
         }else{
             pointList.set(playerId,POINT_LIST[(Arrays.asList(POINT_LIST).indexOf(pointList.get(playerId)))+1]);
         }

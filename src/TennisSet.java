@@ -55,7 +55,7 @@ public class TennisSet {
         this.pointList.get(currentPoint).updatePoints(playerId);
         if(this.pointList.get(currentPoint).isNewGame() == true){
             this.currentPoint++;
-            this.pointList.set(this.currentPoint,new TennisPoint());
+            this.initSet();
         }
         if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
             this.ownerOfTheSet = playerId;
@@ -70,6 +70,10 @@ public class TennisSet {
             }
         }
         return count;
+    }
+
+    public String getCurrentPoint (int playerId){
+        return this.pointList.get(this.currentPoint).getPointList().get(playerId);
     }
 
     private void initSet(){

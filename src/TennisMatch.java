@@ -17,6 +17,7 @@ public class TennisMatch {
         this.playerList.set(0,player2);
         this.matchType = matchType;
         this.tieBreak = tieBreak;
+        this.currentGame = 0;
     }
 
     public List<TennisPlayer> getPlayerList() {

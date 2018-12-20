@@ -5,8 +5,10 @@ public class TennisGame {
     private int gameOwner;
     private List<TennisSet> tennisSetList;
     private int currentSet;
-    private final static int BESTOFFIVE = 5;
-    private final static int BESTOFTHREE = 3;
+
+    public int getGameOwner() {
+        return gameOwner;
+    }
 
     @Override
     public String toString() {
@@ -57,6 +59,14 @@ public class TennisGame {
     @Override
     public int hashCode() {
         return Objects.hash(gameOwner, tennisSetList, currentSet);
+    }
+
+    public int getCurrentSet() {
+        return currentSet;
+    }
+
+    public void setCurrentSet(int currentSet) {
+        this.currentSet = currentSet;
     }
 
     public TennisGame() {

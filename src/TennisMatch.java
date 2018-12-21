@@ -20,55 +20,64 @@ public class TennisMatch {
         this.currentGame = 0;
     }
 
-    public List<TennisPlayer> getPlayerList() {
-        return playerList;
-    }
-
-    public void setPlayerList(List<TennisPlayer> playerList) {
-        this.playerList = playerList;
-    }
-
-    public List<TennisGame> getGameList() {
-        return gameList;
-    }
-
-    public void setMatchType(MatchType matchType) {
-        this.matchType = matchType;
-    }
-
-    public boolean isTieBreak() {
-        return tieBreak;
-    }
-
-    public void setTieBreak(boolean tieBreak) {
-        this.tieBreak = tieBreak;
-    }
-
+    /**
+     * Update players point
+     * @param player player which has won the point
+     */
     private void updateWithPointWonBy(TennisPlayer player){
         this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak,this.matchType.getMatchType());
     }
 
+    /**
+     * Return the points of player in the current point
+     * @param player chosen player
+     * @return String format point
+     */
     private String pointsForPlayer(TennisPlayer player){
         return this.gameList.get(this.currentGame).getPoint(this.getPlayerId(player));
     }
 
+    /**
+     * Return the number of sets
+     * @return number of sets
+     */
     private int currentSetNumber(){
         return this.gameList.get(this.currentGame).getCurrentSet();
     }
 
+    /**
+     * return the won games by the player
+     * @param setId the id of the chosen set
+     * @param player chosen player
+     * @return won set games
+     */
     private int gamesInCurrentSetForPlayer(int setId, TennisPlayer player){
-        return this.gameList.get(this.currentGame).getSetsCount(this.getPlayerId(player),setId);
+        return this.gameList.get(this.currentGame).getPointCountInASet(this.getPlayerId(player),setId);
     }
 
+    /**
+     * Check if the match is finished or not
+     * @return {True} finished match {false} unfinished match
+     */
     private boolean isFinished(){
         return (this.currentGame>=this.matchType.getMatchType())?countOwnedTennisGames(this.matchType.getRequirements()):false;
     }
 
+    /**
+     * Check if the player has the requirement to win
+     * @param requirements required match in order to win
+     * @return {True} player has won the match {False} player has not won the match
+     */
     private boolean countOwnedTennisGames(int requirements) {
         return(this.countOwnedGames(this.getPlayerId(this.playerList.get(1))) + requirements <= this.countOwnedGames(this.getPlayerId(this.playerList.get(0)))+ requirements ||
                 this.countOwnedGames(this.getPlayerId(this.playerList.get(0)))+ requirements <= this.countOwnedGames(this.getPlayerId(this.playerList.get(1))))?true:false;
     }
 
+    /**
+     * Count the owned games by the player
+     * @param playerId id of the player (1/2)
+     * @return counter of owned games
+     */
     private int countOwnedGames(int playerId){
         int count = 0;
         for(int i = 0;i<this.gameList.size();i++){
@@ -77,6 +86,11 @@ public class TennisMatch {
         return count;
     }
 
+    /**
+     * Get the id of the player
+     * @param player player instance
+     * @return player1 => 0 | player2 => 1
+     */
     private int getPlayerId(TennisPlayer player){
         return(player.getName()=="Player1")?0:(player.getName()=="Player2")?1:-1;
     }

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ public class TennisSet {
 
     public TennisSet() {
         this.ownerOfTheSet = -1;
+        this.pointList = new ArrayList<>();
         this.initSet();
     }
 
@@ -30,11 +32,21 @@ public class TennisSet {
         return ownerOfTheSet;
     }
 
+    /**
+     * Update the current set
+     * @param playerId id of the player which has won the match
+     * @param isTieBreak is this match has a tie-break
+     * @param maxSets maxNumber of Sets
+     */
     public void updateSet(int playerId, boolean isTieBreak, int maxSets){
         this.pointList.get(currentPoint).updatePoints(playerId);
         this.checkStatusOfCurrentPoint(playerId);
     }
 
+    /**
+     * Check status of the current Point
+     * @param playerId id of the player
+     */
     private void checkStatusOfCurrentPoint(int playerId) {
         if(this.pointList.get(currentPoint).isNewGame() == true){
             this.currentPoint++;
@@ -45,11 +57,20 @@ public class TennisSet {
         }
     }
 
+    /**
+     * Update a tie break set
+     * @param playerId
+     */
     public void updateTieBreakSet(int playerId){
         this.pointList.get(this.currentPoint).updatePointTieBreak(playerId);
         this.checkStatusOfCurrentPoint(playerId);
     }
 
+    /**
+     * Get the points from a player
+     * @param playerId playerId
+     * @return point count
+     */
     public int getPoint(int playerId){
         int count=0;
         for(TennisPoint aPoint:this.pointList){
@@ -60,14 +81,26 @@ public class TennisSet {
         return count;
     }
 
-    public String getCurrentPoint (int playerId){
+    /**
+     * Get current point
+     * @param playerId id of the player
+     * @return point from a player
+     */
+    public String getCurrentPoint(int playerId){
         return this.pointList.get(this.currentPoint).getPointList().get(playerId);
     }
 
+    /**
+     * Init a new set
+     */
     private void initSet(){
         this.pointList.set(this.currentPoint,new TennisPoint());
     }
 
+    /**
+     * Check if this set has been won
+     * @return {true} end of the set {false} new set
+     */
     public boolean isNewSet(){
         return (this.ownerOfTheSet!=-1)?true:false;
     }

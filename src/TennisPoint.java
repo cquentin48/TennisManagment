@@ -76,6 +76,10 @@ public class TennisPoint {
         }
     }
 
+    /**
+     * Update a tie-break point
+     * @param playerId
+     */
     public void updatePointTieBreak(int playerId){
         updatePointList(playerId, Integer.toString(Integer.parseInt(this.pointList.get(playerId))));
         if(Integer.parseInt(this.pointList.get(playerId)) > Integer.parseInt(this.pointList.get((playerId+1)%2)) +2){

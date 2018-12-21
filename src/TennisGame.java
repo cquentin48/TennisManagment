@@ -29,6 +29,12 @@ public class TennisGame {
                 Objects.equals(tennisSetList, that.tennisSetList);
     }
 
+    /**
+     * Update the current game
+     * @param playerId id of the player which has won the point
+     * @param isTieBreak if this match has a tie-break
+     * @param maxSets max number of sets in a game
+     */
     public void updateGame(int playerId, boolean isTieBreak, int maxSets){
         if(isTieBreak == true && this.getCurrentSet()==(maxSets-1)){
             updateTieBreakGame(playerId);
@@ -37,27 +43,46 @@ public class TennisGame {
         }
     }
 
+    /**
+     * Update normal Set
+     * @param playerId id of the player
+     * @param isTieBreak if it has a tie break
+     * @param maxSets max numberOfSets
+     */
     private void updateNormalSet(int playerId, boolean isTieBreak, int maxSets) {
         this.tennisSetList.get(this.currentSet).updateSet(playerId,isTieBreak,maxSets);
         this.checkStatusOfCurrentSet(playerId);
     }
 
+    /**
+     * Check status of current set
+     * @param playerId id of the player
+     */
     private void checkStatusOfCurrentSet(int playerId) {
         if(this.tennisSetList.get(this.currentSet).isNewSet() == true){
             this.currentSet++;
             this.initGame();
         }
-        if(this.countSets(playerId) <=(this.countSets((playerId+1)%2) +2)){
+        if(this.countWonSets(playerId) <=(this.countWonSets((playerId+1)%2) +2)){
             this.gameOwner = playerId;
         }
     }
 
+    /**
+     * Update a tie break game
+     * @param playerId id of the player
+     */
     private void updateTieBreakGame(int playerId){
         this.tennisSetList.get(this.currentSet).updateTieBreakSet(playerId);
         this.checkStatusOfCurrentSet(playerId);
     }
 
-    private int countSets(int playerId){
+    /**
+     * Count number of sets won by a player
+     * @param playerId id of the player
+     * @return Integer won sets by the player
+     */
+    private int countWonSets(int playerId){
         int count = 0;
         for(int i = 0;i<this.tennisSetList.size();i++){
             count = (this.tennisSetList.get(i).getOwnerOfTheSet()==playerId)?count+1:count;
@@ -65,10 +90,21 @@ public class TennisGame {
         return count;
     }
 
-    public int getSetsCount(int playerId, int setId){
+    /**
+     * Counts points in a chosen set
+     * @param playerId id of the player
+     * @param setId id of the chosen set
+     * @return point in chosen set
+     */
+    public int getPointCountInASet(int playerId, int setId){
         return this.tennisSetList.get(setId).getPoint(playerId);
     }
 
+    /**
+     * Get the point from the current Set
+     * @param playerId if of the player
+     * @return point from the current set
+     */
     public String getPoint(int playerId){
         return this.tennisSetList.get(this.currentSet).getCurrentPoint(playerId);
     }
@@ -87,6 +123,9 @@ public class TennisGame {
         this.initGame();
     }
 
+    /**
+     * Init a new game
+     */
     private void initGame(){
         this.tennisSetList.set(this.currentSet,new TennisSet());
     }

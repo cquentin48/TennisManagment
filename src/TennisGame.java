@@ -29,8 +29,20 @@ public class TennisGame {
                 Objects.equals(tennisSetList, that.tennisSetList);
     }
 
-    public void updateGame(int playerId){
-        this.tennisSetList.get(this.currentSet).updateSet(playerId);
+    public void updateGame(int playerId, boolean isTieBreak, int maxSets){
+        if(isTieBreak == true && this.getCurrentSet()==(maxSets-1)){
+            updateTieBreakGame(playerId);
+        }else {
+            updateNormalSet(playerId, isTieBreak, maxSets);
+        }
+    }
+
+    private void updateNormalSet(int playerId, boolean isTieBreak, int maxSets) {
+        this.tennisSetList.get(this.currentSet).updateSet(playerId,isTieBreak,maxSets);
+        this.checkStatusOfCurrentSet(playerId);
+    }
+
+    private void checkStatusOfCurrentSet(int playerId) {
         if(this.tennisSetList.get(this.currentSet).isNewSet() == true){
             this.currentSet++;
             this.initGame();
@@ -40,7 +52,12 @@ public class TennisGame {
         }
     }
 
-    public int countSets(int playerId){
+    private void updateTieBreakGame(int playerId){
+        this.tennisSetList.get(this.currentSet).updateTieBreakSet(playerId);
+        this.checkStatusOfCurrentSet(playerId);
+    }
+
+    private int countSets(int playerId){
         int count = 0;
         for(int i = 0;i<this.tennisSetList.size();i++){
             count = (this.tennisSetList.get(i).getOwnerOfTheSet()==playerId)?count+1:count;
@@ -65,16 +82,12 @@ public class TennisGame {
         return currentSet;
     }
 
-    public void setCurrentSet(int currentSet) {
-        this.currentSet = currentSet;
-    }
-
     public TennisGame() {
         this.currentSet = 0;
         this.initGame();
     }
 
-    public void initGame(){
+    private void initGame(){
         this.tennisSetList.set(this.currentSet,new TennisSet());
     }
 }

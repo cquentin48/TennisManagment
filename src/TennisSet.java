@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class TennisSet {
@@ -27,32 +26,16 @@ public class TennisSet {
         this.initSet();
     }
 
-    public List<TennisPoint> getPointList() {
-        return pointList;
-    }
-
-    public void setPointList(List<TennisPoint> pointList) {
-        this.pointList = pointList;
-    }
-
-    public int getCurrentPoint() {
-        return currentPoint;
-    }
-
-    public void setCurrentPoint(int currentPoint) {
-        this.currentPoint = currentPoint;
-    }
-
     public int getOwnerOfTheSet() {
         return ownerOfTheSet;
     }
 
-    public void setOwnerOfTheSet(int ownerOfTheSet) {
-        this.ownerOfTheSet = ownerOfTheSet;
+    public void updateSet(int playerId, boolean isTieBreak, int maxSets){
+        this.pointList.get(currentPoint).updatePoints(playerId);
+        this.checkStatusOfCurrentPoint(playerId);
     }
 
-    public void updateSet(int playerId){
-        this.pointList.get(currentPoint).updatePoints(playerId);
+    private void checkStatusOfCurrentPoint(int playerId) {
         if(this.pointList.get(currentPoint).isNewGame() == true){
             this.currentPoint++;
             this.initSet();
@@ -60,6 +43,11 @@ public class TennisSet {
         if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
             this.ownerOfTheSet = playerId;
         }
+    }
+
+    public void updateTieBreakSet(int playerId){
+        this.pointList.get(this.currentPoint).updatePointTieBreak(playerId);
+        this.checkStatusOfCurrentPoint(playerId);
     }
 
     public int getPoint(int playerId){

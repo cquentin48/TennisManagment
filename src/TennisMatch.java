@@ -45,7 +45,7 @@ public class TennisMatch {
     }
 
     private void updateWithPointWonBy(TennisPlayer player){
-        this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player));
+        this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak,this.matchType.getMatchType());
     }
 
     private String pointsForPlayer(TennisPlayer player){
@@ -61,9 +61,7 @@ public class TennisMatch {
     }
 
     private boolean isFinished(){
-        return (this.currentGame>=5)?countOwnedTennisGames(2):
-        (this.currentGame>=2)?countOwnedTennisGames(1):
-        false;
+        return (this.currentGame>=this.matchType.getMatchType())?countOwnedTennisGames(this.matchType.getRequirements()):false;
     }
 
     private boolean countOwnedTennisGames(int requirements) {

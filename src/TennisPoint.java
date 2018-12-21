@@ -32,16 +32,8 @@ public class TennisPoint {
         return pointList;
     }
 
-    public void setPointList(List<String> pointList) {
-        this.pointList = pointList;
-    }
-
     public int getOwnerOfThePoint() {
         return ownerOfThePoint;
-    }
-
-    public void setOwnerOfThePoint(int ownerOfThePoint) {
-        this.ownerOfThePoint = ownerOfThePoint;
     }
 
     @Override
@@ -56,8 +48,12 @@ public class TennisPoint {
      * Init the points for a new game
      */
     public void initPoints(){
-        pointList.set(0,"0");
-        pointList.set(1,"0");
+        updatePointList(0, "0");
+        updatePointList(1, "0");
+    }
+
+    private void updatePointList(int i, String s) {
+        pointList.set(i, s);
     }
 
     /**
@@ -67,9 +63,9 @@ public class TennisPoint {
     public void updatePoints(int playerId){
         if(pointList.get(playerId) == "40"){
             if(pointList.get((playerId+1)%2)=="A"){
-                pointList.set(1,"40");
+                updatePointList((playerId+1)%2, "40");
             } else if(pointList.get((playerId+1)%2) == "40"){
-                pointList.set(0,"A");
+                updatePointList(playerId, "A");
             } else{
                 ownerOfThePoint = playerId;
             }
@@ -77,6 +73,13 @@ public class TennisPoint {
                 ownerOfThePoint = playerId;
         }else{
             pointList.set(playerId,POINT_LIST[(Arrays.asList(POINT_LIST).indexOf(pointList.get(playerId)))+1]);
+        }
+    }
+
+    public void updatePointTieBreak(int playerId){
+        updatePointList(playerId, Integer.toString(Integer.parseInt(this.pointList.get(playerId))));
+        if(Integer.parseInt(this.pointList.get(playerId)) > Integer.parseInt(this.pointList.get((playerId+1)%2)) +2){
+            this.ownerOfThePoint = playerId;
         }
     }
 

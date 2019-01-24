@@ -9,22 +9,36 @@ public class TennisMatch {
     private boolean tieBreak;
     private final static int BESTOFFIVE = 5;
     private final static int BESTOFTHREE = 3;
+    private String player1Name;
+    private String player2Name;
 
 
     public TennisMatch(TennisPlayer player1, TennisPlayer player2, MatchType matchType, boolean tieBreak){
+        this.player1Name = player1.getName();
+        this.player2Name = player2.getName();
+        this.gameList = new ArrayList<>();
+        this.gameList.add(new TennisGame());
         this.playerList = new ArrayList<>();
-        this.playerList.set(0,player1);
-        this.playerList.set(0,player2);
+        this.playerList.add(player1);
+        this.playerList.add(player2);
         this.matchType = matchType;
         this.tieBreak = tieBreak;
         this.currentGame = 0;
+    }
+
+    public TennisPlayer getPlayerObjectById(int id){
+        return playerList.get(id);
+    }
+
+    public boolean isTieBreak() {
+        return tieBreak;
     }
 
     /**
      * Update players point
      * @param player player which has won the point
      */
-    private void updateWithPointWonBy(TennisPlayer player){
+    public void updateWithPointWonBy(TennisPlayer player){
         this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak,this.matchType.getMatchType());
     }
 
@@ -33,7 +47,7 @@ public class TennisMatch {
      * @param player chosen player
      * @return String format point
      */
-    private String pointsForPlayer(TennisPlayer player){
+    public String pointsForPlayer(TennisPlayer player){
         return this.gameList.get(this.currentGame).getPoint(this.getPlayerId(player));
     }
 
@@ -41,7 +55,7 @@ public class TennisMatch {
      * Return the number of sets
      * @return number of sets
      */
-    private int currentSetNumber(){
+    public int currentSetNumber(){
         return this.gameList.get(this.currentGame).getCurrentSet();
     }
 
@@ -51,7 +65,7 @@ public class TennisMatch {
      * @param player chosen player
      * @return won set games
      */
-    private int gamesInCurrentSetForPlayer(int setId, TennisPlayer player){
+    public int gamesInCurrentSetForPlayer(int setId, TennisPlayer player){
         return this.gameList.get(this.currentGame).getPointCountInASet(this.getPlayerId(player),setId);
     }
 
@@ -59,8 +73,12 @@ public class TennisMatch {
      * Check if the match is finished or not
      * @return {True} finished match {false} unfinished match
      */
-    private boolean isFinished(){
+    public boolean isFinished(){
         return (this.currentGame>=this.matchType.getMatchType())?countOwnedTennisGames(this.matchType.getRequirements()):false;
+    }
+
+    public MatchType getMatchType() {
+        return matchType;
     }
 
     /**
@@ -68,7 +86,7 @@ public class TennisMatch {
      * @param requirements required match in order to win
      * @return {True} player has won the match {False} player has not won the match
      */
-    private boolean countOwnedTennisGames(int requirements) {
+    public boolean countOwnedTennisGames(int requirements) {
         return(this.countOwnedGames(this.getPlayerId(this.playerList.get(1))) + requirements <= this.countOwnedGames(this.getPlayerId(this.playerList.get(0)))+ requirements ||
                 this.countOwnedGames(this.getPlayerId(this.playerList.get(0)))+ requirements <= this.countOwnedGames(this.getPlayerId(this.playerList.get(1))))?true:false;
     }
@@ -78,7 +96,7 @@ public class TennisMatch {
      * @param playerId id of the player (1/2)
      * @return counter of owned games
      */
-    private int countOwnedGames(int playerId){
+    public int countOwnedGames(int playerId){
         int count = 0;
         for(int i = 0;i<this.gameList.size();i++){
             count = (this.gameList.get(i).getGameOwner()==playerId)?count+1:count;
@@ -91,7 +109,11 @@ public class TennisMatch {
      * @param player player instance
      * @return player1 => 0 | player2 => 1
      */
-    private int getPlayerId(TennisPlayer player){
-        return(player.getName()=="Player1")?0:(player.getName()=="Player2")?1:-1;
+    public int getPlayerId(TennisPlayer player){
+        return(player.getName()==player1Name)?0:(player.getName()==player2Name)?1:-1;
+    }
+
+    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
+        this.gameList.get(this.currentGame).setCurrentPoints(pointPlayer1, pointPlayer2);
     }
 }

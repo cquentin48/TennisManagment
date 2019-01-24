@@ -24,6 +24,7 @@ public class TennisSet {
 
     public TennisSet() {
         this.ownerOfTheSet = -1;
+        this.currentPoint = 0;
         this.pointList = new ArrayList<>();
         this.initSet();
     }
@@ -94,7 +95,8 @@ public class TennisSet {
      * Init a new set
      */
     private void initSet(){
-        this.pointList.set(this.currentPoint,new TennisPoint());
+        TennisPoint p = new TennisPoint();
+        this.pointList.add(this.currentPoint,p);
     }
 
     /**
@@ -103,5 +105,9 @@ public class TennisSet {
      */
     public boolean isNewSet(){
         return (this.ownerOfTheSet!=-1)?true:false;
+    }
+
+    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
+        this.pointList.get(this.currentPoint).setCurrentPoints(pointPlayer1,pointPlayer2);
     }
 }

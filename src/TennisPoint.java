@@ -6,7 +6,7 @@ import java.util.Objects;
 public class TennisPoint {
     private List<String> pointList;
     private int ownerOfThePoint;
-    private final static String[] POINT_LIST = {"0","15","30","40","A"};
+    public final static String[] POINT_LIST = {"0","15","30","40","A"};
 
     public TennisPoint() {
         this.pointList = new ArrayList<>();
@@ -48,12 +48,16 @@ public class TennisPoint {
      * Init the points for a new game
      */
     public void initPoints(){
-        updatePointList(0, "0");
-        updatePointList(1, "0");
+        this.pointList.add(0,POINT_LIST[0]);
+        this.pointList.add(1,POINT_LIST[0]);
     }
 
     private void updatePointList(int i, String s) {
         pointList.set(i, s);
+    }
+
+    private void initPointList(int i){
+        this.pointList.add(1,POINT_LIST[0]);
     }
 
     /**
@@ -72,7 +76,9 @@ public class TennisPoint {
         }else if(pointList.get(playerId) == "A"){
                 ownerOfThePoint = playerId;
         }else{
-            pointList.set(playerId,POINT_LIST[(Arrays.asList(POINT_LIST).indexOf(pointList.get(playerId)))+1]);
+            String currentPointIndex = POINT_LIST[(Arrays.asList(POINT_LIST).indexOf(pointList.get(playerId)))+1];
+            pointList.set(playerId,currentPointIndex);
+            System.out.println("jdsjfdslfj");
         }
     }
 
@@ -93,5 +99,10 @@ public class TennisPoint {
      */
     public boolean isNewGame(){
         return(this.ownerOfThePoint!=-1)?true:false;
+    }
+
+    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
+        this.pointList.set(0,pointPlayer1);
+        this.pointList.set(1,pointPlayer2);
     }
 }

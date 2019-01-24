@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -120,6 +121,7 @@ public class TennisGame {
 
     public TennisGame() {
         this.currentSet = 0;
+        this.tennisSetList = new ArrayList<>();
         this.initGame();
     }
 
@@ -127,6 +129,10 @@ public class TennisGame {
      * Init a new game
      */
     private void initGame(){
-        this.tennisSetList.set(this.currentSet,new TennisSet());
+        this.tennisSetList.add(this.currentSet,new TennisSet());
+    }
+
+    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
+        this.tennisSetList.get(this.currentSet).setCurrentPoints(pointPlayer1,pointPlayer2);
     }
 }

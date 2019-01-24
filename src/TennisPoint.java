@@ -78,7 +78,6 @@ public class TennisPoint {
         }else{
             String currentPointIndex = POINT_LIST[(Arrays.asList(POINT_LIST).indexOf(pointList.get(playerId)))+1];
             pointList.set(playerId,currentPointIndex);
-            System.out.println("jdsjfdslfj");
         }
     }
 

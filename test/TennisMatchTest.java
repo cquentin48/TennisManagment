@@ -46,7 +46,7 @@ public class TennisMatchTest {
             if(i<=2){
                 point = TennisPoint.POINT_LIST[i+1];
             }else{
-                point = TennisPoint.POINT_LIST[TennisPoint.POINT_LIST.length-2];
+                point = TennisPoint.POINT_LIST[3];
             }
             assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(0)), point);
         }

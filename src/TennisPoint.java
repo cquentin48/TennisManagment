@@ -32,6 +32,10 @@ public class TennisPoint {
         return pointList;
     }
 
+    public void setOwnerOfThePoint(int ownerOfThePoint) {
+        this.ownerOfThePoint = ownerOfThePoint;
+    }
+
     public int getOwnerOfThePoint() {
         return ownerOfThePoint;
     }
@@ -71,14 +75,19 @@ public class TennisPoint {
             } else if(pointList.get((playerId+1)%2) == "40"){
                 updatePointList(playerId, "A");
             } else{
+                updatePointList(0, "0");
+                updatePointList(1, "0");
                 ownerOfThePoint = playerId;
             }
         }else if(pointList.get(playerId) == "A"){
+            updatePointList(0, "0");
+            updatePointList(1, "0");
                 ownerOfThePoint = playerId;
         }else{
             String currentPointIndex = POINT_LIST[(Arrays.asList(POINT_LIST).indexOf(pointList.get(playerId)))+1];
             pointList.set(playerId,currentPointIndex);
         }
+        System.out.println("hfjkdshf");
     }
 
     /**

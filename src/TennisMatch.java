@@ -35,6 +35,23 @@ public class TennisMatch {
     }
 
     /**
+     * Get the owner of the currentPoint
+     * @return owner of the currentPoint
+     */
+    public int getOwnerOfThePoint(){
+        return gameList.get(currentGame).getOwnerOfThePoint();
+    }
+
+
+    /**
+     * Get the owner of a chosen point
+     * @return owner of a chosen point
+     */
+    public int getOwnerOfThePoint(int pointId){
+        return gameList.get(currentGame).getOwnerOfThePoint();
+    }
+
+    /**
      * Update players point
      * @param player player which has won the point
      */

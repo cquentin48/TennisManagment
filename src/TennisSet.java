@@ -45,6 +45,23 @@ public class TennisSet {
     }
 
     /**
+     * Get the owner of the currentPoint
+     * @return owner of the currentPoint
+     */
+    public int getOwnerOfThePoint(){
+        return pointList.get(this.currentPoint).getOwnerOfThePoint();
+    }
+
+
+    /**
+     * Get the owner of a chosen point
+     * @return owner of a chosen point
+     */
+    public int getOwnerOfThePoint(int pointId){
+        return pointList.get(pointId).getOwnerOfThePoint();
+    }
+
+    /**
      * Check status of the current Point
      * @param playerId id of the player
      */

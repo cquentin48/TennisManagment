@@ -20,6 +20,23 @@ public class TennisGame {
                 '}';
     }
 
+    /**
+     * Get the owner of the currentPoint
+     * @return owner of the currentPoint
+     */
+    public int getOwnerOfThePoint(){
+        return tennisSetList.get(this.currentSet).getOwnerOfThePoint();
+    }
+
+
+    /**
+     * Get the owner of a chosen point
+     * @return owner of a chosen point
+     */
+    public int getOwnerOfThePoint(int pointId){
+        return tennisSetList.get(this.currentSet).getOwnerOfThePoint();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

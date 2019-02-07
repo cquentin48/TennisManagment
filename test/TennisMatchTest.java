@@ -39,14 +39,15 @@ public class TennisMatchTest {
     public void normalPointUpdated(){
         String point = TennisPoint.POINT_LIST[0];
         assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(0)), point);
-
-        for(int i = 0;i<TennisPoint.POINT_LIST.length;i++){
+        boolean pointOver = false;
+        for(int i = 0;i<TennisPoint.POINT_LIST.length && pointOver == false;i++){
 
             matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(0));
             if(i<=2){
                 point = TennisPoint.POINT_LIST[i+1];
             }else{
-                point = TennisPoint.POINT_LIST[3];
+                pointOver = true;
+                point = TennisPoint.POINT_LIST[0];
             }
             assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(0)), point);
         }

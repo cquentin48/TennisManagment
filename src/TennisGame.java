@@ -34,7 +34,7 @@ public class TennisGame {
      * @return owner of a chosen point
      */
     public int getOwnerOfThePoint(int pointId){
-        return tennisSetList.get(this.currentSet).getOwnerOfThePoint();
+        return tennisSetList.get(this.currentSet).getOwnerOfThePoint(pointId);
     }
 
     @Override

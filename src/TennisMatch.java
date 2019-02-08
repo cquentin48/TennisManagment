@@ -48,7 +48,7 @@ public class TennisMatch {
      * @return owner of a chosen point
      */
     public int getOwnerOfThePoint(int pointId){
-        return gameList.get(currentGame).getOwnerOfThePoint();
+        return gameList.get(currentGame).getOwnerOfThePoint(pointId);
     }
 
     /**

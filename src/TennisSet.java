@@ -45,13 +45,21 @@ public class TennisSet {
     }
 
     /**
-     * Get the owner of the currentPoint
+     * Get the owner of the current point
      * @return owner of the currentPoint
      */
     public int getOwnerOfThePoint(){
         return pointList.get(this.currentPoint).getOwnerOfThePoint();
     }
 
+
+    /**
+     * Get the owner of the precedent point
+     * @return owner of the precedent point
+     */
+    public int getOwnerOfPrecedentPoint(){
+        return pointList.get(this.currentPoint-1).getOwnerOfThePoint();
+    }
 
     /**
      * Get the owner of a chosen point
@@ -67,10 +75,11 @@ public class TennisSet {
      */
     private void checkStatusOfCurrentPoint(int playerId) {
         if(this.pointList.get(currentPoint).isNewGame() == true){
+            this.pointList.get(currentPoint).setOwnerOfThePoint(playerId);
             this.currentPoint++;
             this.initSet();
         }
-        if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
+        else if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
             this.ownerOfTheSet = playerId;
         }
     }

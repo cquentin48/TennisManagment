@@ -51,12 +51,36 @@ public class TennisMatch {
         return gameList.get(currentGame).getOwnerOfThePoint(pointId);
     }
 
+    public int getCurrentPoint(){
+        return gameList.get(currentGame).getCurrentPoint();
+    }
+
+    public int getCurrentSet(){
+        return gameList.get(currentGame).getCurrentSet();
+    }
+
+    public int getCurrentSet(int chosenGame){
+        return gameList.get(chosenGame).getCurrentSet();
+    }
+
     /**
      * Update players point
      * @param player player which has won the point
      */
     public void updateWithPointWonBy(TennisPlayer player){
         this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak,this.matchType.getMatchType());
+    }
+
+    public boolean isGameWon(){
+        return gameList.get(currentGame).isGameWon();
+    }
+
+    public boolean isGameWon(int id){
+        return gameList.get(id).isGameWon();
+    }
+
+    public boolean isSetWon(int id){
+        return gameList.get(id).isSetWon(id);
     }
 
     /**

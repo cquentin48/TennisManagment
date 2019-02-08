@@ -37,6 +37,15 @@ public class TennisGame {
         return tennisSetList.get(this.currentSet).getOwnerOfThePoint(pointId);
     }
 
+
+    /**
+     * Get the owner of a chosen point
+     * @return owner of a chosen point
+     */
+    public int getCurrentPoint(){
+        return tennisSetList.get(this.currentSet).getCurrentPoint();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,12 +86,30 @@ public class TennisGame {
      * @param playerId id of the player
      */
     private void checkStatusOfCurrentSet(int playerId) {
-        if(this.tennisSetList.get(this.currentSet).isNewSet() == true){
+        if(this.tennisSetList.get(this.currentSet).isSetWon() == true){
             this.currentSet++;
             this.initGame();
         }
-        if(this.countWonSets(playerId) <=(this.countWonSets((playerId+1)%2) +2)){
+        if(this.countWonSets(playerId) <=(this.countWonSets((playerId+1)%2) +2) && this.currentSet == 6){
             this.gameOwner = playerId;
+        }
+    }
+
+    public boolean isSetWon(int setId){
+        return tennisSetList.get(setId).isSetWon();
+    }
+
+    public boolean isGameWon(){
+        if(currentSet >=5){
+            if(countWonSets(0)>countWonSets(1)){
+                gameOwner = 0;
+            }
+            if(countWonSets(1)>countWonSets(0)){
+                gameOwner = 1;
+            }
+            return true;
+        }else{
+            return false;
         }
     }
 

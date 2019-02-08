@@ -52,15 +52,6 @@ public class TennisSet {
         return pointList.get(this.currentPoint).getOwnerOfThePoint();
     }
 
-
-    /**
-     * Get the owner of the precedent point
-     * @return owner of the precedent point
-     */
-    public int getOwnerOfPrecedentPoint(){
-        return pointList.get(this.currentPoint-1).getOwnerOfThePoint();
-    }
-
     /**
      * Get the owner of a chosen point
      * @return owner of a chosen point
@@ -82,6 +73,35 @@ public class TennisSet {
         else if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
             this.ownerOfTheSet = playerId;
         }
+    }
+
+    public boolean isSetWon(){
+        if(currentPoint>=7){
+            if(countOwnedPoints(0) > countOwnedPoints(1) +2){
+                return newSet(0);
+            }else if(countOwnedPoints(0) +2< countOwnedPoints(1)){
+                return newSet(1);
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    private boolean newSet(int i) {
+        ownerOfTheSet = i;
+        return true;
+    }
+
+    private int countOwnedPoints(int playerId){
+        int pointOwnedByPlayer = 0;
+        for(int i = 0;i<pointList.size();i++){
+            if(pointList.get(i).getOwnerOfThePoint() == playerId){
+                pointOwnedByPlayer++;
+            }
+        }
+        return pointOwnedByPlayer;
     }
 
     /**
@@ -115,6 +135,14 @@ public class TennisSet {
      */
     public String getCurrentPoint(int playerId){
         return this.pointList.get(this.currentPoint).getPointList().get(playerId);
+    }
+
+    /**
+     * Get current point
+     * @return current played point
+     */
+    public int getCurrentPoint(){
+        return this.currentPoint;
     }
 
     /**

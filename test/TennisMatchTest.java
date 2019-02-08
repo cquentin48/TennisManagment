@@ -58,15 +58,14 @@ public class TennisMatchTest {
      */
     @Test
     public void advantage(){
-        matchList.get(0).setCurrentPoints(TennisPoint.POINT_LIST[3],TennisPoint.POINT_LIST[3]);
-        matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(0));
+        setCurrentPoint(TennisPoint.POINT_LIST[3],TennisPoint.POINT_LIST[3],0);
         assertTrue(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(0))=="A");
         assertTrue(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(1))=="40");
     }
 
     @Test
     public void advantageLost(){
-        matchList.get(0).setCurrentPoints(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3]);
+        setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
         assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(0)), "A");
         assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(1)), "40");
         matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(1));
@@ -76,40 +75,27 @@ public class TennisMatchTest {
 
     @Test
     public void winPointWithAdvantage(){
-        matchList.get(0).setCurrentPoints(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3]);
-        matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(0));
+        setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
         assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(0)), "0");
         assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(1)), "0");
-        assertSame(matchList.get(0).getOwnerOfThePoint(0), 0);
+        assertSame(0, matchList.get(0).getOwnerOfThePoint(0));
     }
 
-    /**
-     * Check a tennis game if all is good
-     * @param playerId id of the player
-     */
-    public void checkTennisPlayerPointsInAGame(int playerId) {
-        pointsForPlayer(playerId);
-        setForPlayer(playerId);
-        gamesForPlayer(playerId);
-        currentSetNumber(playerId);
+    private void setCurrentPoint(String currentPointPlayer1, String currentPointPlayer2, int winnerPlayer) {
+        matchList.get(0).setCurrentPoints(currentPointPlayer1, currentPointPlayer2);
+        matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayer));
     }
 
-    public void pointsForPlayer(int playerId) {
-
-    }
-
-    public void setForPlayer(int playerId){
-
-    }
-
-    public void currentSetNumber(int playerId) {
-    }
-
-    public void gamesForPlayer(int playerId) {
-    }
-
-    public boolean isFinished(boolean expectedValue, int currentMatch) {
-        return matchList.get(currentMatch).isFinished();
+    @Test
+    public void updateSetWithoutTieBreak(){
+        for(int i = 0; i<6; i++){
+            setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
+            assertSame(i+1,this.matchList.get(0).getCurrentPoint());
+            assertFalse(this.matchList.get(0).isGameWon());
+        }
+        setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
+        assertSame(1,this.matchList.get(0).getCurrentSet());
+        assertTrue(this.matchList.get(0).isSetWon(0));
     }
 
     public void tearDown(){

@@ -39,7 +39,7 @@ public class TennisSet {
      * @param isTieBreak is this match has a tie-break
      * @param maxSets maxNumber of Sets
      */
-    public void updateSet(int playerId, boolean isTieBreak, int maxSets){
+    public void updateSet(int playerId){
         this.pointList.get(currentPoint).updatePoints(playerId);
         this.checkStatusOfCurrentPoint(playerId);
     }

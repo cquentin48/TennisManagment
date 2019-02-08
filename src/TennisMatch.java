@@ -92,6 +92,14 @@ public class TennisMatch {
         return this.gameList.get(this.currentGame).getPoint(this.getPlayerId(player));
     }
 
+    public int getSetOwner(int setId){
+        return gameList.get(currentGame).getSetOwner(setId);
+    }
+
+    public int getOwnerOfTheGame(int gameId){
+        return gameList.get(gameId).getGameOwner();
+    }
+
     /**
      * Return the number of sets
      * @return number of sets
@@ -154,7 +162,11 @@ public class TennisMatch {
         return(player.getName()==player1Name)?0:(player.getName()==player2Name)?1:-1;
     }
 
-    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
-        this.gameList.get(this.currentGame).setCurrentPoints(pointPlayer1, pointPlayer2);
+    public void setCurrentPoints(int currentSet, String pointPlayer1, String pointPlayer2) {
+        this.gameList.get(this.currentGame).setCurrentPoints(currentSet, pointPlayer1, pointPlayer2);
+    }
+
+    public void setCurrentSet(int currentSet, int winnerPlayerId) {
+        this.gameList.get(this.currentGame).setCurrentSet(currentSet, winnerPlayerId);
     }
 }

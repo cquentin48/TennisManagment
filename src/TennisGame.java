@@ -66,18 +66,16 @@ public class TennisGame {
         if(isTieBreak == true && this.getCurrentSet()==(maxSets-1)){
             updateTieBreakGame(playerId);
         }else {
-            updateNormalSet(playerId, isTieBreak, maxSets);
+            updateNormalSet(playerId);
         }
     }
 
     /**
      * Update normal Set
      * @param playerId id of the player
-     * @param isTieBreak if it has a tie break
-     * @param maxSets max numberOfSets
      */
-    private void updateNormalSet(int playerId, boolean isTieBreak, int maxSets) {
-        this.tennisSetList.get(this.currentSet).updateSet(playerId,isTieBreak,maxSets);
+    private void updateNormalSet(int playerId) {
+        this.tennisSetList.get(this.currentSet).updateSet(playerId);
         this.checkStatusOfCurrentSet(playerId);
     }
 
@@ -176,7 +174,20 @@ public class TennisGame {
         this.tennisSetList.add(this.currentSet,new TennisSet());
     }
 
-    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
-        this.tennisSetList.get(this.currentSet).setCurrentPoints(pointPlayer1,pointPlayer2);
+    public void setCurrentPoints(int currentSet, String pointPlayer1, String pointPlayer2) {
+        this.tennisSetList.get(currentSet).setCurrentPoints(pointPlayer1,pointPlayer2);
     }
+
+    public void setCurrentSet(int currentSet, int winnerPlayerId) {
+        for(int j = 0 ;j<currentSet;j++) {
+            for (int i = 0; i < TennisPoint.POINT_LIST.length; i++) {
+                this.updateNormalSet(winnerPlayerId);
+            }
+        }
+    }
+
+    public int getSetOwner(int setId){
+        return tennisSetList.get(setId).getOwnerOfTheSet();
+    }
+
 }

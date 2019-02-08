@@ -82,7 +82,7 @@ public class TennisMatchTest {
     }
 
     private void setCurrentPoint(String currentPointPlayer1, String currentPointPlayer2, int winnerPlayer) {
-        matchList.get(0).setCurrentPoints(currentPointPlayer1, currentPointPlayer2);
+        matchList.get(0).setCurrentPoints(matchList.get(0).getCurrentSet(),currentPointPlayer1, currentPointPlayer2);
         matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayer));
     }
 
@@ -96,6 +96,27 @@ public class TennisMatchTest {
         setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
         assertSame(1,this.matchList.get(0).getCurrentSet());
         assertTrue(this.matchList.get(0).isSetWon(0));
+    }
+
+    @Test
+    public void updateSetWithTieBreak(){
+        /**
+         * TODO Implémenter la fonction de test pour un point de tiebreak
+         */
+    }
+
+    @Test
+    public void winGameWithoutTieBreakOnTheThreeBest(){
+        for(int i = 0;i<3;i++){
+            newSet(i%2);
+            assertSame(i%2,matchList.get(0).getOwnerOfTheGame(i-1));
+        }
+        assertTrue(matchList.get(0).isFinished());
+    }
+
+    private void newSet(int winnerPlayerId) {
+        matchList.get(0).setCurrentSet(5, winnerPlayerId);
+        matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayerId));
     }
 
     public void tearDown(){

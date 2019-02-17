@@ -69,6 +69,7 @@ public class TennisMatch {
      */
     public void updateWithPointWonBy(TennisPlayer player){
         this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak,this.matchType.getMatchType());
+        checkCurrentStatusOfGame();
     }
 
     public boolean isGameWon(){
@@ -81,6 +82,17 @@ public class TennisMatch {
 
     public boolean isSetWon(int id){
         return gameList.get(id).isSetWon(id);
+    }
+
+    public void checkCurrentStatusOfGame(){
+        if(gameList.get(currentGame).isGameWon()){
+            currentGame++;
+            initGame();
+        }
+    }
+
+    private void initGame(){
+        gameList.add(currentGame,new TennisGame());
     }
 
     /**

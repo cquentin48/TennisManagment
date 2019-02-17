@@ -76,7 +76,7 @@ public class TennisSet {
     }
 
     public boolean isSetWon(){
-        if(currentPoint>=7){
+        if(currentPoint>=6){
             if(countOwnedPoints(0) > countOwnedPoints(1) +2){
                 return newSet(0);
             }else if(countOwnedPoints(0) +2< countOwnedPoints(1)){

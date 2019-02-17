@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class TennisGame {
     private int gameOwner;
@@ -179,10 +180,8 @@ public class TennisGame {
     }
 
     public void setCurrentSet(int currentSet, int winnerPlayerId) {
-        for(int j = 0 ;j<currentSet;j++) {
-            for (int i = 0; i < TennisPoint.POINT_LIST.length; i++) {
-                this.updateNormalSet(winnerPlayerId);
-            }
+        for(int j = 0; currentSet >= j; j++) {
+            IntStream.range(0, TennisPoint.POINT_LIST.length).map(i -> winnerPlayerId).forEach(this::updateNormalSet);
         }
     }
 

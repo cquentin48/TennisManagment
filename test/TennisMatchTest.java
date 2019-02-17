@@ -100,23 +100,49 @@ public class TennisMatchTest {
 
     @Test
     public void updateSetWithTieBreak(){
-        /**
-         * TODO Implémenter la fonction de test pour un point de tiebreak
-         */
+        for(int i = 0;i<6; i++){
+            newSet(i%2,1);
+            assertSame(i%2,matchList.get(0).getSetOwner(matchList.get(1).getCurrentSet()));
+            newSet((i+1)%2,1);
+            assertSame((i+1)%2,matchList.get(0).getSetOwner(matchList.get(1).getCurrentSet()));
+        }
+        for(int i = 0;i<7;i++){
+            matchList.get(1).updateWithPointWonBy(matchList.get(1).getPlayerObjectById(0));
+        }
     }
 
     @Test
     public void winGameWithoutTieBreakOnTheThreeBest(){
         for(int i = 0;i<3;i++){
-            newSet(i%2);
-            assertSame(i%2,matchList.get(0).getOwnerOfTheGame(i-1));
+            newGame(i%2,0);
+            assertSame(i%2,matchList.get(0).getOwnerOfTheGame(i));
         }
         assertTrue(matchList.get(0).isFinished());
     }
 
-    private void newSet(int winnerPlayerId) {
-        matchList.get(0).setCurrentSet(5, winnerPlayerId);
-        matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayerId));
+    @Test
+    public void winGameWithoutTieBreakOnTheFiveBest(){
+        for(int i = 0;i<5;i++){
+            newGame(0,2);
+            assertSame(0,matchList.get(2).getOwnerOfTheGame(0));
+        }
+        assertTrue(matchList.get(2).isFinished());
+    }
+
+    private void newSet(int winnerPlayerId, int matchId) {
+        matchList.get(matchId).setCurrentSet(5, winnerPlayerId);
+        matchList.get(matchId).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayerId));
+    }
+
+    /**
+     * Initialisation function for testing purpose about game set in tennis
+     * @param winnerPlayerId id for the owner of the tennis game
+     * @param matchId Id of the match
+     */
+    private void newGame(int winnerPlayerId, int matchId){
+        for(int i = 0;i<=5;i++){
+            newSet(winnerPlayerId,matchId);
+        }
     }
 
     public void tearDown(){

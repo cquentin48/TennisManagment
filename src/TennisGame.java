@@ -77,15 +77,15 @@ public class TennisGame {
      */
     private void updateNormalSet(int playerId) {
         this.tennisSetList.get(this.currentSet).updateSet(playerId);
-        this.checkStatusOfCurrentSet(playerId);
+        this.checkStatusOfCurrentSet(playerId,false);
     }
 
     /**
      * Check status of current set
      * @param playerId id of the player
      */
-    private void checkStatusOfCurrentSet(int playerId) {
-        if(this.tennisSetList.get(this.currentSet).isSetWon() == true){
+    private void checkStatusOfCurrentSet(int playerId, boolean isTieBreak) {
+        if(this.tennisSetList.get(this.currentSet).isSetWon(isTieBreak) == true){
             this.currentSet++;
             this.initGame();
         }
@@ -94,8 +94,8 @@ public class TennisGame {
         }
     }
 
-    public boolean isSetWon(int setId){
-        return tennisSetList.get(setId).isSetWon();
+    public boolean isSetWon(int setId, boolean isTieBreak){
+        return tennisSetList.get(setId).isSetWon(isTieBreak);
     }
 
     public boolean isGameWon(){
@@ -117,8 +117,13 @@ public class TennisGame {
      * @param playerId id of the player
      */
     private void updateTieBreakGame(int playerId){
-        this.tennisSetList.get(this.currentSet).updateTieBreakSet(playerId);
-        this.checkStatusOfCurrentSet(playerId);
+        if(countWonSets(1) == countWonSets(2) && countWonSets(1) == 6){
+            this.tennisSetList.get(this.currentSet).updateTieBreakSet(playerId);
+            this.checkStatusOfCurrentSet(playerId,true);
+        }else{
+            this.tennisSetList.get(this.currentSet).updateSet(playerId);
+            this.checkStatusOfCurrentSet(playerId,false);
+        }
     }
 
     /**
@@ -179,9 +184,13 @@ public class TennisGame {
         this.tennisSetList.get(currentSet).setCurrentPoints(pointPlayer1,pointPlayer2);
     }
 
-    public void setCurrentSet(int currentSet, int winnerPlayerId) {
+    public void setCurrentSet(int currentSet, int winnerPlayerId, Boolean isTieBreak) {
         for(int j = 0; currentSet >= j; j++) {
-            IntStream.range(0, TennisPoint.POINT_LIST.length).map(i -> winnerPlayerId).forEach(this::updateNormalSet);
+            if(isTieBreak){
+                IntStream.range(0, TennisPoint.POINT_LIST.length).map(i -> winnerPlayerId).forEach(this::updateTieBreakGame);
+            }else{
+                IntStream.range(0, TennisPoint.POINT_LIST.length).map(i -> winnerPlayerId).forEach(this::updateNormalSet);
+            }
         }
     }
 

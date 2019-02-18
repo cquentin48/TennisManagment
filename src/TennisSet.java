@@ -36,8 +36,6 @@ public class TennisSet {
     /**
      * Update the current set
      * @param playerId id of the player which has won the match
-     * @param isTieBreak is this match has a tie-break
-     * @param maxSets maxNumber of Sets
      */
     public void updateSet(int playerId){
         this.pointList.get(currentPoint).updatePoints(playerId);
@@ -75,17 +73,33 @@ public class TennisSet {
         }
     }
 
-    public boolean isSetWon(){
-        if(currentPoint>=6){
-            if(countOwnedPoints(0) > countOwnedPoints(1) +2){
-                return newSet(0);
-            }else if(countOwnedPoints(0) +2< countOwnedPoints(1)){
-                return newSet(1);
+    public boolean isSetWon(boolean isTieBreak){
+        if(isTieBreak){
+            if(currentPoint>7){
+                if(pointList.get(currentPoint).getPointFromPlayerId(0)>pointList.get(currentPoint).getPointFromPlayerId(1)%2){
+                    return newSet(0);
+                }
+                else if(pointList.get(currentPoint).getPointFromPlayerId(0)>pointList.get(currentPoint).getPointFromPlayerId(1)%2){
+                    return newSet(1);
+                }else{
+                    return false;
+                }
             }else{
                 return false;
             }
-        }else{
-            return false;
+        }
+        else {
+            if (currentPoint >= 6) {
+                if (countOwnedPoints(0) > countOwnedPoints(1) + 2) {
+                    return newSet(0);
+                } else if (countOwnedPoints(0) + 2 < countOwnedPoints(1)) {
+                    return newSet(1);
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
     }
 

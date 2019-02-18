@@ -100,6 +100,10 @@ public class TennisPoint {
         }
     }
 
+    public int getPointFromPlayerId(int playerId){
+        return Integer.parseInt(pointList.get(playerId));
+    }
+
     /**
      * Check if this game is finished or not
      * @return {true} game finished {false} still playing this point

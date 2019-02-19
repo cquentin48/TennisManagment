@@ -8,6 +8,9 @@ import static org.junit.Assert.*;
 public class TennisMatchTest {
     private ArrayList<TennisMatch> matchList;
 
+    /**
+     * Initialisation for testing purposes
+     */
     public TennisMatchTest() {
         this.matchList = new ArrayList<>();
         this.matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_THREE,false));

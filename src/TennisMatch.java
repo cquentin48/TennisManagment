@@ -3,7 +3,7 @@ import java.util.List;
 
 public class TennisMatch {
     private List<TennisPlayer> playerList;
-    private List<TennisGame> gameList;
+    private List<TennisSet> gameList;
     private int currentGame;
     private MatchType matchType;
     private boolean tieBreak;
@@ -17,7 +17,7 @@ public class TennisMatch {
         this.player1Name = player1.getName();
         this.player2Name = player2.getName();
         this.gameList = new ArrayList<>();
-        this.gameList.add(new TennisGame());
+        this.gameList.add(new TennisSet());
         this.playerList = new ArrayList<>();
         this.playerList.add(player1);
         this.playerList.add(player2);
@@ -92,7 +92,7 @@ public class TennisMatch {
     }
 
     private void initGame(){
-        gameList.add(currentGame,new TennisGame());
+        gameList.add(currentGame,new TennisSet());
     }
 
     /**
@@ -174,10 +174,22 @@ public class TennisMatch {
         return(player.getName()==player1Name)?0:(player.getName()==player2Name)?1:-1;
     }
 
+    /**
+     * Set current points
+     * @param currentSet current set
+     * @param pointPlayer1 points for the first player
+     * @param pointPlayer2 points for the second player
+     */
     public void setCurrentPoints(int currentSet, String pointPlayer1, String pointPlayer2) {
         this.gameList.get(this.currentGame).setCurrentPoints(currentSet, pointPlayer1, pointPlayer2);
     }
 
+
+    /**
+     * Setting current set
+     * @param currentSet current set
+     * @param winnerPlayerId winner player id
+     */
     public void setCurrentSet(int currentSet, int winnerPlayerId) {
         this.gameList.get(this.currentGame).setCurrentSet(currentSet, winnerPlayerId, isTieBreak());
     }

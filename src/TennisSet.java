@@ -1,181 +1,213 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class TennisSet {
-    private List<TennisPoint> pointList;
-    private int currentPoint;
-    private int ownerOfTheSet;
+    private int gameOwner;
+    private List<TennisGame> tennisGameList;
+    private int currentSet;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TennisSet tennisSet = (TennisSet) o;
-        return currentPoint == tennisSet.currentPoint &&
-                ownerOfTheSet == tennisSet.ownerOfTheSet &&
-                Objects.equals(pointList, tennisSet.pointList);
+    public int getGameOwner() {
+        return gameOwner;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(pointList, currentPoint, ownerOfTheSet);
-    }
-
-    public TennisSet() {
-        this.ownerOfTheSet = -1;
-        this.currentPoint = 0;
-        this.pointList = new ArrayList<>();
-        this.initSet();
-    }
-
-    public int getOwnerOfTheSet() {
-        return ownerOfTheSet;
+    public String toString() {
+        return "TennisSet{" +
+                "gameOwner=" + gameOwner +
+                ", tennisGameList=" + tennisGameList +
+                ", currentSet=" + currentSet +
+                '}';
     }
 
     /**
-     * Update the current set
-     * @param playerId id of the player which has won the match
-     */
-    public void updateSet(int playerId){
-        this.pointList.get(currentPoint).updatePoints(playerId);
-        this.checkStatusOfCurrentPoint(playerId);
-    }
-
-    /**
-     * Get the owner of the current point
+     * Get the owner of the currentPoint
      * @return owner of the currentPoint
      */
     public int getOwnerOfThePoint(){
-        return pointList.get(this.currentPoint).getOwnerOfThePoint();
+        return tennisGameList.get(this.currentSet).getOwnerOfThePoint();
     }
+
 
     /**
      * Get the owner of a chosen point
      * @return owner of a chosen point
      */
     public int getOwnerOfThePoint(int pointId){
-        return pointList.get(pointId).getOwnerOfThePoint();
+        return tennisGameList.get(this.currentSet).getOwnerOfThePoint(pointId);
+    }
+
+
+    /**
+     * Get the owner of a chosen point
+     * @return owner of a chosen point
+     */
+    public int getCurrentPoint(){
+        return tennisGameList.get(this.currentSet).getCurrentPoint();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TennisSet that = (TennisSet) o;
+        return gameOwner == that.gameOwner &&
+                currentSet == that.currentSet &&
+                Objects.equals(tennisGameList, that.tennisGameList);
     }
 
     /**
-     * Check status of the current Point
+     * Update the current game
+     * @param playerId id of the player which has won the point
+     * @param isTieBreak if this match has a tie-break
+     */
+    public void updateGame(int playerId, boolean isTieBreak){
+        if(isTieBreak == true && this.getCurrentSet()==6){
+            updateTieBreakGame(playerId);
+        }else {
+            updateNormalSet(playerId);
+        }
+    }
+
+    /**
+     * Update normal Set
      * @param playerId id of the player
      */
-    private void checkStatusOfCurrentPoint(int playerId) {
-        if(this.pointList.get(currentPoint).isNewGame() == true){
-            this.pointList.get(currentPoint).setOwnerOfThePoint(playerId);
-            this.currentPoint++;
-            this.initSet();
-        }
-        else if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
-            this.ownerOfTheSet = playerId;
-        }
-    }
-
-    public boolean isSetWon(boolean isTieBreak){
-        if(isTieBreak){
-            if(currentPoint>7){
-                if(pointList.get(currentPoint).getPointFromPlayerId(0)>pointList.get(currentPoint).getPointFromPlayerId(1)%2){
-                    return newSet(0);
-                }
-                else if(pointList.get(currentPoint).getPointFromPlayerId(0)>pointList.get(currentPoint).getPointFromPlayerId(1)%2){
-                    return newSet(1);
-                }else{
-                    return false;
-                }
-            }else{
-                return false;
-            }
-        }
-        else {
-            if (currentPoint >= 6) {
-                if (countOwnedPoints(0) > countOwnedPoints(1) + 2) {
-                    return newSet(0);
-                } else if (countOwnedPoints(0) + 2 < countOwnedPoints(1)) {
-                    return newSet(1);
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-    }
-
-    private boolean newSet(int i) {
-        ownerOfTheSet = i;
-        return true;
-    }
-
-    private int countOwnedPoints(int playerId){
-        int pointOwnedByPlayer = 0;
-        for(int i = 0;i<pointList.size();i++){
-            if(pointList.get(i).getOwnerOfThePoint() == playerId){
-                pointOwnedByPlayer++;
-            }
-        }
-        return pointOwnedByPlayer;
+    private void updateNormalSet(int playerId) {
+        this.tennisGameList.get(this.currentSet).updateSet(playerId);
+        this.checkStatusOfCurrentSet(playerId,false);
     }
 
     /**
-     * Update a tie break set
-     * @param playerId
+     * Check status of current set
+     * @param playerId id of the player
      */
-    public void updateTieBreakSet(int playerId){
-        this.pointList.get(this.currentPoint).updatePointTieBreak(playerId);
-        this.checkStatusOfCurrentPoint(playerId);
+    private void checkStatusOfCurrentSet(int playerId, boolean isTieBreak) {
+        if(this.tennisGameList.get(this.currentSet).isSetWon(isTieBreak) == true){
+            this.currentSet++;
+            this.initGame();
+        }
+    }
+
+    public boolean isSetWon(int setId, boolean isTieBreak){
+        return tennisGameList.get(setId).isSetWon(isTieBreak);
     }
 
     /**
-     * Get the points from a player
-     * @param playerId playerId
-     * @return point count
+     * Check if the current game is won
+     * @return true game won || false game still playing
      */
-    public int getPoint(int playerId){
-        int count=0;
-        for(TennisPoint aPoint:this.pointList){
-            if(aPoint.getOwnerOfThePoint()==playerId){
-                count++;
+    public boolean isGameWon(){
+        if(currentSet >=5){
+            if(countWonSets(0)>countWonSets(1)){
+                gameOwner = 0;
             }
+            if(countWonSets(1)>countWonSets(0)){
+                gameOwner = 1;
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Update a tie break game
+     * @param playerId id of the player
+     */
+    private void updateTieBreakGame(int playerId){
+        if(countWonSets(1) == countWonSets(0) && countWonSets(1) == 6){
+            this.tennisGameList.get(this.currentSet).updateTieBreakSet(playerId);
+            this.checkStatusOfCurrentSet(playerId,true);
+        }else{
+            this.tennisGameList.get(this.currentSet).updateSet(playerId);
+            this.checkStatusOfCurrentSet(playerId,false);
+        }
+    }
+
+    /**
+     * Count number of sets won by a player
+     * @param playerId id of the player
+     * @return Integer won sets by the player
+     */
+    private int countWonSets(int playerId){
+        int count = 0;
+        for(int i = 0; i<this.tennisGameList.size(); i++){
+            count = (this.tennisGameList.get(i).getOwnerOfTheGame()==playerId)?count+1:count;
         }
         return count;
     }
 
     /**
-     * Get current point
+     * Counts points in a chosen set
      * @param playerId id of the player
-     * @return point from a player
+     * @param setId id of the chosen set
+     * @return point in chosen set
      */
-    public String getCurrentPoint(int playerId){
-        return this.pointList.get(this.currentPoint).getPointList().get(playerId);
+    public int getPointCountInASet(int playerId, int setId){
+        return this.tennisGameList.get(setId).getPoint(playerId);
     }
 
     /**
-     * Get current point
-     * @return current played point
+     * Get the point from the current Set
+     * @param playerId if of the player
+     * @return point from the current set
      */
-    public int getCurrentPoint(){
-        return this.currentPoint;
+    public String getPoint(int playerId){
+        return this.tennisGameList.get(this.currentSet).getCurrentPoint(playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameOwner, tennisGameList, currentSet);
+    }
+
+    public int getCurrentSet() {
+        return currentSet;
+    }
+
+    public TennisSet() {
+        this.currentSet = 0;
+        this.tennisGameList = new ArrayList<>();
+        this.initGame();
     }
 
     /**
-     * Init a new set
+     * Init a new game
      */
-    private void initSet(){
-        TennisPoint p = new TennisPoint();
-        this.pointList.add(this.currentPoint,p);
+    private void initGame(){
+        this.tennisGameList.add(this.currentSet,new TennisGame());
     }
 
     /**
-     * Check if this set has been won
-     * @return {true} end of the set {false} new set
+     * Set current point in the current game
+     * @param currentGame current game to update
+     * @param pointPlayer1 point for the first player
+     * @param pointPlayer2 point for the second player(
      */
-    public boolean isNewSet(){
-        return (this.ownerOfTheSet!=-1)?true:false;
+    public void setCurrentPoints(int currentGame, String pointPlayer1, String pointPlayer2) {
+        this.tennisGameList.get(currentGame).setCurrentPoints(pointPlayer1,pointPlayer2);
     }
 
-    public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
-        this.pointList.get(this.currentPoint).setCurrentPoints(pointPlayer1,pointPlayer2);
+    /**
+     * Setting current set for the current match
+     * @param currentSet set to fix
+     * @param winnerPlayerId winner for the game
+     * @param isTieBreak is the match is tie break
+     */
+    public void setCurrentSet(int currentSet, int winnerPlayerId, Boolean isTieBreak) {
+        for(int j = 0; currentSet >= j; j++) {
+            if(isTieBreak){
+                IntStream.range(0, TennisPoint.POINT_LIST.length).map(i -> winnerPlayerId).forEach(this::updateTieBreakGame);
+            }else{
+                IntStream.range(0, TennisPoint.POINT_LIST.length).map(i -> winnerPlayerId).forEach(this::updateNormalSet);
+            }
+        }
     }
+
+    public int getSetOwner(int setId){
+        return tennisGameList.get(setId).getOwnerOfTheGame();
+    }
+
 }

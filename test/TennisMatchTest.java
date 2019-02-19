@@ -100,17 +100,20 @@ public class TennisMatchTest {
 
     @Test
     public void updateSetWithTieBreak(){
-        for(int i = 0;i<=5;i++){
-            newSet(0,1);
+        for(int i = 0;i<=6;i++){
+            newSet(0,1,1);
+            newSet(1,1,1);
         }
-        System.out.println("blabla");
+        for(int i = 0;i<=7;i++){
+            matchList.get(1).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(0));
+        }
     }
 
     @Test
     public void winGameWithoutTieBreakOnTheThreeBest(){
         for(int i = 0;i<3;i++){
-            newGame(i%2,0);
-            assertSame(i%2,matchList.get(0).getOwnerOfTheGame(i));
+            newGame(0,0);
+            assertSame(0,matchList.get(0).getOwnerOfTheGame(i));
         }
         assertTrue(matchList.get(0).isFinished());
     }
@@ -124,8 +127,8 @@ public class TennisMatchTest {
         assertTrue(matchList.get(2).isFinished());
     }
 
-    private void newSet(int winnerPlayerId, int matchId) {
-        matchList.get(matchId).setCurrentSet(5, winnerPlayerId);
+    private void newSet(int winnerPlayerId, int matchId, int numberOfSets) {
+        matchList.get(matchId).setCurrentSet(numberOfSets, winnerPlayerId);
         matchList.get(matchId).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayerId));
     }
 
@@ -136,7 +139,7 @@ public class TennisMatchTest {
      */
     private void newGame(int winnerPlayerId, int matchId){
         for(int i = 0;i<=5;i++){
-            newSet(winnerPlayerId,matchId);
+            newSet(winnerPlayerId,matchId,5);
         }
     }
 

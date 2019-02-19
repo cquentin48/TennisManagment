@@ -94,7 +94,12 @@ public class TennisPoint {
      * @param playerId
      */
     public void updatePointTieBreak(int playerId){
-        updatePointList(playerId, Integer.toString(Integer.parseInt(this.pointList.get(playerId))));
+
+        if(pointList.get(0) == TennisPoint.POINT_LIST[3] || pointList.get(1) == TennisPoint.POINT_LIST[3]){
+            updatePointList(playerId, Integer.toString(Integer.parseInt(this.pointList.get(playerId))));
+        }else{
+            updatePoints(playerId);
+        }
         if(Integer.parseInt(this.pointList.get(playerId)) > Integer.parseInt(this.pointList.get((playerId+1)%2)) +2){
             this.ownerOfThePoint = playerId;
         }

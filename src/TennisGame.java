@@ -61,10 +61,9 @@ public class TennisGame {
      * Update the current game
      * @param playerId id of the player which has won the point
      * @param isTieBreak if this match has a tie-break
-     * @param maxSets max number of sets in a game
      */
-    public void updateGame(int playerId, boolean isTieBreak, int maxSets){
-        if(isTieBreak == true && this.getCurrentSet()==(maxSets-1)){
+    public void updateGame(int playerId, boolean isTieBreak){
+        if(isTieBreak == true && this.getCurrentSet()==6){
             updateTieBreakGame(playerId);
         }else {
             updateNormalSet(playerId);
@@ -88,9 +87,6 @@ public class TennisGame {
         if(this.tennisSetList.get(this.currentSet).isSetWon(isTieBreak) == true){
             this.currentSet++;
             this.initGame();
-        }
-        if(this.countWonSets(playerId) <=(this.countWonSets((playerId+1)%2) +2) && this.currentSet == 6){
-            this.gameOwner = playerId;
         }
     }
 
@@ -117,7 +113,7 @@ public class TennisGame {
      * @param playerId id of the player
      */
     private void updateTieBreakGame(int playerId){
-        if(countWonSets(1) == countWonSets(2) && countWonSets(1) == 6){
+        if(countWonSets(1) == countWonSets(0) && countWonSets(1) == 6){
             this.tennisSetList.get(this.currentSet).updateTieBreakSet(playerId);
             this.checkStatusOfCurrentSet(playerId,true);
         }else{

@@ -68,7 +68,7 @@ public class TennisMatch {
      * @param player player which has won the point
      */
     public void updateWithPointWonBy(TennisPlayer player){
-        this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak,this.matchType.getMatchType());
+        this.gameList.get(this.currentGame).updateGame(this.getPlayerId(player),tieBreak);
         checkCurrentStatusOfGame();
     }
 

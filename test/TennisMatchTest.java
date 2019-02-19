@@ -17,22 +17,6 @@ public class TennisMatchTest {
     }
 
     /**
-     * Check an end of set with tie break enabled
-     */
-    @Test
-    public void newGameWithTieBreak(){
-
-    }
-
-    /**
-     * Check an end of set with tie break enabled
-     */
-    @Test
-    public void newGameWithoutTieBreak(){
-
-    }
-
-    /**
      * Check for a point if it is correctly set
      */
     @Test
@@ -63,6 +47,9 @@ public class TennisMatchTest {
         assertTrue(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(1))=="40");
     }
 
+    /**
+     * Trigger test when an advantage is lost
+     */
     @Test
     public void advantageLost(){
         setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
@@ -73,6 +60,9 @@ public class TennisMatchTest {
         assertSame(matchList.get(0).pointsForPlayer(matchList.get(0).getPlayerObjectById(1)), "40");
     }
 
+    /**
+     * Trigger test when a player win a point with advantage
+     */
     @Test
     public void winPointWithAdvantage(){
         setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
@@ -81,11 +71,20 @@ public class TennisMatchTest {
         assertSame(0, matchList.get(0).getOwnerOfThePoint(0));
     }
 
+    /**
+     * Setting current point for testing purposes
+     * @param currentPointPlayer1 point for first player
+     * @param currentPointPlayer2 poin for second player
+     * @param winnerPlayer winner for the current point
+     */
     private void setCurrentPoint(String currentPointPlayer1, String currentPointPlayer2, int winnerPlayer) {
         matchList.get(0).setCurrentPoints(matchList.get(0).getCurrentSet(),currentPointPlayer1, currentPointPlayer2);
         matchList.get(0).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayer));
     }
 
+    /**
+     * Test of updating set without tie break
+     */
     @Test
     public void updateSetWithoutTieBreak(){
         for(int i = 0; i<6; i++){
@@ -98,6 +97,10 @@ public class TennisMatchTest {
         assertTrue(this.matchList.get(0).isSetWon(0));
     }
 
+
+    /**
+     * Updating set test with tie break
+     */
     @Test
     public void updateSetWithTieBreak(){
         for(int i = 0;i<=6;i++){
@@ -109,6 +112,9 @@ public class TennisMatchTest {
         }
     }
 
+    /**
+     * Win game test without tie break with three bests
+     */
     @Test
     public void winGameWithoutTieBreakOnTheThreeBest(){
         for(int i = 0;i<3;i++){
@@ -118,6 +124,9 @@ public class TennisMatchTest {
         assertTrue(matchList.get(0).isFinished());
     }
 
+    /**
+     * Win game test function on five best
+     */
     @Test
     public void winGameWithoutTieBreakOnTheFiveBest(){
         for(int i = 0;i<5;i++){
@@ -127,6 +136,12 @@ public class TennisMatchTest {
         assertTrue(matchList.get(2).isFinished());
     }
 
+    /**
+     * New set init for testing purposes
+     * @param winnerPlayerId id of the winner of the set
+     * @param matchId id of the testing match
+     * @param numberOfSets number of sets won
+     */
     private void newSet(int winnerPlayerId, int matchId, int numberOfSets) {
         matchList.get(matchId).setCurrentSet(numberOfSets, winnerPlayerId);
         matchList.get(matchId).updateWithPointWonBy(matchList.get(0).getPlayerObjectById(winnerPlayerId));

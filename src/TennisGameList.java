@@ -2,35 +2,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TennisSet {
+public class TennisGameList {
     private List<TennisPoint> pointList;
     private int currentPoint;
-    private int ownerOfTheSet;
+    private int ownerOfTheGame;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TennisSet tennisSet = (TennisSet) o;
-        return currentPoint == tennisSet.currentPoint &&
-                ownerOfTheSet == tennisSet.ownerOfTheSet &&
-                Objects.equals(pointList, tennisSet.pointList);
+        TennisGameList tennisGameList = (TennisGameList) o;
+        return currentPoint == tennisGameList.currentPoint &&
+                ownerOfTheGame == tennisGameList.ownerOfTheGame &&
+                Objects.equals(pointList, tennisGameList.pointList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pointList, currentPoint, ownerOfTheSet);
+        return Objects.hash(pointList, currentPoint, ownerOfTheGame);
     }
 
-    public TennisSet() {
-        this.ownerOfTheSet = -1;
+    public TennisGameList() {
+        this.ownerOfTheGame = -1;
         this.currentPoint = 0;
         this.pointList = new ArrayList<>();
         this.initSet();
     }
 
-    public int getOwnerOfTheSet() {
-        return ownerOfTheSet;
+    public int getOwnerOfTheGame() {
+        return ownerOfTheGame;
     }
 
     /**
@@ -69,18 +69,23 @@ public class TennisSet {
             this.initSet();
         }
         else if(this.getPoint(playerId)>=7 && (this.getPoint((playerId+1%2))+2)<this.getPoint(playerId)){
-            this.ownerOfTheSet = playerId;
+            this.ownerOfTheGame = playerId;
         }
     }
 
+    /**
+     * Check if a game is won
+     * @param isTieBreak is the match has a tie break
+     * @return true game won false game still playing
+     */
     public boolean isSetWon(boolean isTieBreak){
         if(isTieBreak){
             if(currentPoint>7){
                 if(pointList.get(currentPoint).getPointFromPlayerId(0)>pointList.get(currentPoint).getPointFromPlayerId(1)%2){
-                    return newSet(0);
+                    return newGame(0);
                 }
                 else if(pointList.get(currentPoint).getPointFromPlayerId(0)>pointList.get(currentPoint).getPointFromPlayerId(1)%2){
-                    return newSet(1);
+                    return newGame(1);
                 }else{
                     return false;
                 }
@@ -91,9 +96,9 @@ public class TennisSet {
         else {
             if (currentPoint >= 6) {
                 if (countOwnedPoints(0) > countOwnedPoints(1) + 2) {
-                    return newSet(0);
+                    return newGame(0);
                 } else if (countOwnedPoints(0) + 2 < countOwnedPoints(1)) {
-                    return newSet(1);
+                    return newGame(1);
                 } else {
                     return false;
                 }
@@ -103,11 +108,21 @@ public class TennisSet {
         }
     }
 
-    private boolean newSet(int i) {
-        ownerOfTheSet = i;
+    /**
+     * New game initialization
+     * @param i
+     * @return true
+     */
+    private boolean newGame(int i) {
+        ownerOfTheGame = i;
         return true;
     }
 
+    /**
+     * Count owned points
+     * @param playerId id of the player of which to count
+     * @return number of points owned by the player
+     */
     private int countOwnedPoints(int playerId){
         int pointOwnedByPlayer = 0;
         for(int i = 0;i<pointList.size();i++){
@@ -172,9 +187,14 @@ public class TennisSet {
      * @return {true} end of the set {false} new set
      */
     public boolean isNewSet(){
-        return (this.ownerOfTheSet!=-1)?true:false;
+        return (this.ownerOfTheGame !=-1)?true:false;
     }
 
+    /**
+     * Setting current points for the players
+     * @param pointPlayer1 player1 actual points
+     * @param pointPlayer2 player2 actual points
+     */
     public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
         this.pointList.get(this.currentPoint).setCurrentPoints(pointPlayer1,pointPlayer2);
     }

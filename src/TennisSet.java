@@ -63,7 +63,7 @@ public class TennisSet {
      * @param isTieBreak if this match has a tie-break
      */
     public void updateGame(int playerId, boolean isTieBreak){
-        if(isTieBreak == true && this.getCurrentSet()==6){
+        if(isTieBreak == true && getCurrentSet()==6){
             updateTieBreakGame(playerId);
         }else {
             updateNormalSet(playerId);
@@ -75,7 +75,7 @@ public class TennisSet {
      * @param playerId id of the player
      */
     private void updateNormalSet(int playerId) {
-        this.tennisGameList.get(this.currentSet).updateSet(playerId);
+        this.tennisGameList.get(this.currentSet).updateGame(playerId);
         this.checkStatusOfCurrentSet(playerId,false);
     }
 
@@ -100,10 +100,10 @@ public class TennisSet {
      */
     public boolean isGameWon(){
         if(currentSet >=5){
-            if(countWonSets(0)>countWonSets(1)){
+            if(countWonGames(0)> countWonGames(1)){
                 gameOwner = 0;
             }
-            if(countWonSets(1)>countWonSets(0)){
+            if(countWonGames(1)> countWonGames(0)){
                 gameOwner = 1;
             }
             return true;
@@ -117,11 +117,11 @@ public class TennisSet {
      * @param playerId id of the player
      */
     private void updateTieBreakGame(int playerId){
-        if(countWonSets(1) == countWonSets(0) && countWonSets(1) == 6){
-            this.tennisGameList.get(this.currentSet).updateTieBreakSet(playerId);
+        if(countWonGames(1) == countWonGames(0) && countWonGames(1) == 6){
+            this.tennisGameList.get(this.currentSet).updateTieBreakPoint(playerId);
             this.checkStatusOfCurrentSet(playerId,true);
         }else{
-            this.tennisGameList.get(this.currentSet).updateSet(playerId);
+            this.tennisGameList.get(this.currentSet).updateGame(playerId);
             this.checkStatusOfCurrentSet(playerId,false);
         }
     }
@@ -131,7 +131,7 @@ public class TennisSet {
      * @param playerId id of the player
      * @return Integer won sets by the player
      */
-    private int countWonSets(int playerId){
+    private int countWonGames(int playerId){
         int count = 0;
         for(int i = 0; i<this.tennisGameList.size(); i++){
             count = (this.tennisGameList.get(i).getOwnerOfTheGame()==playerId)?count+1:count;

@@ -9,9 +9,9 @@ public class TennisPoint {
     public final static String[] POINT_LIST = {"0","15","30","40","A"};
 
     public TennisPoint() {
-        this.pointList = new ArrayList<>();
-        this.ownerOfThePoint = -1;
-        this.initPoints();
+        pointList = new ArrayList<>();
+        ownerOfThePoint = -1;
+        initPoints();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class TennisPoint {
     }
 
     public void setOwnerOfThePoint(int ownerOfThePoint) {
-        this.ownerOfThePoint = ownerOfThePoint;
+        ownerOfThePoint = ownerOfThePoint;
     }
 
     public int getOwnerOfThePoint() {
@@ -52,8 +52,8 @@ public class TennisPoint {
      * Init the points for a new game
      */
     public void initPoints(){
-        this.pointList.add(0,POINT_LIST[0]);
-        this.pointList.add(1,POINT_LIST[0]);
+        pointList.add(0,POINT_LIST[0]);
+        pointList.add(1,POINT_LIST[0]);
     }
 
     private void updatePointList(int i, String s) {
@@ -61,7 +61,7 @@ public class TennisPoint {
     }
 
     private void initPointList(int i){
-        this.pointList.add(1,POINT_LIST[0]);
+        pointList.add(1,POINT_LIST[0]);
     }
 
     /**
@@ -94,17 +94,31 @@ public class TennisPoint {
      * @param playerId
      */
     public void updatePointTieBreak(int playerId){
+        pointList.set(playerId, String.valueOf(Integer.parseInt(pointList.get(playerId))+1));
+        checkTieBreakStatus();
+    }
 
-        if(pointList.get(0) == TennisPoint.POINT_LIST[3] || pointList.get(1) == TennisPoint.POINT_LIST[3]){
-            updatePointList(playerId, Integer.toString(Integer.parseInt(this.pointList.get(playerId))));
-        }else{
-            updatePoints(playerId);
-        }
-        if(Integer.parseInt(this.pointList.get(playerId)) > Integer.parseInt(this.pointList.get((playerId+1)%2)) +2){
-            this.ownerOfThePoint = playerId;
+    /**
+     * Check if the tie break is done
+     * @return true tie break done | false tie break still on going
+     */
+    public boolean checkTieBreakStatus() {
+        if (Integer.parseInt(pointList.get(0)) > Integer.parseInt(pointList.get(1)) + 2) {
+            ownerOfThePoint = 0;
+            return true;
+        } else if (Integer.parseInt(pointList.get(1)) > Integer.parseInt(pointList.get(0)) + 2) {
+            ownerOfThePoint = 1;
+            return true;
+        } else {
+            return false;
         }
     }
 
+    /**
+     * Get point from the player
+     * @param playerId id of the player
+     * @return point for the player chosen
+     */
     public int getPointFromPlayerId(int playerId){
         return Integer.parseInt(pointList.get(playerId));
     }
@@ -114,11 +128,11 @@ public class TennisPoint {
      * @return {true} game finished {false} still playing this point
      */
     public boolean isNewGame(){
-        return(this.ownerOfThePoint!=-1)?true:false;
+        return(ownerOfThePoint!=-1)?true:false;
     }
 
     public void setCurrentPoints(String pointPlayer1, String pointPlayer2) {
-        this.pointList.set(0,pointPlayer1);
-        this.pointList.set(1,pointPlayer2);
+        pointList.set(0,pointPlayer1);
+        pointList.set(1,pointPlayer2);
     }
 }

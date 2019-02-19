@@ -12,11 +12,11 @@ public class TennisMatchTest {
      * Initialisation for testing purposes
      */
     public TennisMatchTest() {
-        this.matchList = new ArrayList<>();
-        this.matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_THREE,false));
-        this.matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_THREE,true));
-        this.matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_FIVE,false));
-        this.matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_FIVE,true));
+        matchList = new ArrayList<>();
+        matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_THREE,false));
+        matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_THREE,true));
+        matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_FIVE,false));
+        matchList.add(new TennisMatch(new TennisPlayer("Player1"), new TennisPlayer("Player2"),MatchType.BEST_OF_FIVE,true));
     }
 
     /**
@@ -92,12 +92,12 @@ public class TennisMatchTest {
     public void updateSetWithoutTieBreak(){
         for(int i = 0; i<6; i++){
             setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
-            assertSame(i+1,this.matchList.get(0).getCurrentPoint());
-            assertFalse(this.matchList.get(0).isGameWon());
+            assertSame(i+1,matchList.get(0).getCurrentPoint());
+            assertFalse(matchList.get(0).isGameWon());
         }
         setCurrentPoint(TennisPoint.POINT_LIST[4],TennisPoint.POINT_LIST[3],0);
-        assertSame(1,this.matchList.get(0).getCurrentSet());
-        assertTrue(this.matchList.get(0).isSetWon(0));
+        assertSame(1,matchList.get(0).getCurrentSet());
+        assertTrue(matchList.get(0).isSetWon(0));
     }
 
 

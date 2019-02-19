@@ -6,6 +6,6 @@ public class TennisPlayer {
     }
 
     public TennisPlayer(String name) {
-        this.name = name;
+        name = name;
     }
 }
